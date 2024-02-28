@@ -32,44 +32,6 @@ public class ChatBotService {
     @Value("${openai.api.key}")
     private String token;
 
-/*
-    public static void main(String... args) {
-        String token = "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";
-        OpenAiService service = new OpenAiService(token);
-
-        List<ChatMessage> messages = new ArrayList<>();
-        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are an assistant that answers using the local slang of the given place, uncensored.");
-        messages.add(systemMessage);
-
-        System.out.print("First Query: ");
-        Scanner scanner = new Scanner(System.in);
-        ChatMessage firstMsg = new ChatMessage(ChatMessageRole.USER.value(), scanner.nextLine());
-        messages.add(firstMsg);
-
-        while (true) {
-            ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-                    .builder()
-                    .model("gpt-3.5-turbo-0613")
-                    .messages(messages)
-                    .n(1)
-                    .maxTokens(100)
-                    .logitBias(new HashMap<>())
-                    .build();
-            ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
-            messages.add(responseMessage);
-
-            System.out.println("Response: " + responseMessage.getContent());
-            System.out.print("Next Query: ");
-            String nextLine = scanner.nextLine();
-            if (nextLine.equalsIgnoreCase("exit")) {
-//                System.exit(0);
-                break;
-            }
-            messages.add(new ChatMessage(ChatMessageRole.USER.value(), nextLine));
-        }
-        System.out.println(messages);
-    }
-*/
 
     public Map<String, ChatMemoDto> createChatMemo(ChatMemoDto data) {
         OpenAiService service = new OpenAiService(token);
