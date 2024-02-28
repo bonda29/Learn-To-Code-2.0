@@ -53,7 +53,7 @@ public class UserService {
         auth0Client.updateUser(user);
         userRepository.save(user);
 
-        return ResponseEntity.ok(MessageResponse.from("User with id " + user.getUserId() + " has been updated successfully!"));
+        return ResponseEntity.ok(MessageResponse.from("User with id " + user.getAuth0Id() + " has been updated successfully!"));
     }
 
     public ResponseEntity<MessageResponse> deleteUser(Long id) {
@@ -61,6 +61,6 @@ public class UserService {
 
         auth0Client.deleteUser(user);
         userRepository.delete(user);
-        return ResponseEntity.ok(MessageResponse.from("User with id " + user.getUserId() + " has been deleted successfully!"));
+        return ResponseEntity.ok(MessageResponse.from("User with id " + user.getAuth0Id() + " has been deleted successfully!"));
     }
 }

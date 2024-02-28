@@ -78,12 +78,12 @@
 //    }
 //
 //    public static void main(String... args) {
-//        String token = "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";
+//        String token = "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";
 //        OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
 //
 //        System.out.println("\nCreating completion...");
 //        CompletionRequest completionRequest = CompletionRequest.builder()
-//                .model("babbage-002")
+//                .model("gpt-4")
 //                .prompt("Somebody once told me the world is gonna roll me")
 //                .echo(true)
 //                .user("testing")

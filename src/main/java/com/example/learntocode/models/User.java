@@ -1,8 +1,6 @@
 package com.example.learntocode.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -29,7 +27,8 @@ public class User {
     private Long id;
 
     @JsonProperty("user_id")
-    private String userId;
+    @Column(name = "auth0_id", unique = true)
+    private String auth0Id;
 
     private String username;
 

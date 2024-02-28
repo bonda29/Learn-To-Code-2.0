@@ -57,8 +57,8 @@ public class Auth0Client {
 
     @SneakyThrows
     private void linkUsers(User parentUser, User childUser) {
-        String parentUserId = parentUser.getUserId();
-        String childUserId = childUser.getUserId();
+        String parentUserId = parentUser.getAuth0Id();
+        String childUserId = childUser.getAuth0Id();
         String childProvider = childUserId.split("\\|")[0];
 
 
@@ -88,7 +88,7 @@ public class Auth0Client {
             return users.get(0);
         }
 
-        User parentUser = users.stream().filter(user -> user.getUserId().startsWith("auth0")).findFirst().orElse(null);
+        User parentUser = users.stream().filter(user -> user.getAuth0Id().startsWith("auth0")).findFirst().orElse(null);
         linkUsers(users.get(0), users.get(1));
 
         return parentUser;
@@ -115,7 +115,7 @@ public class Auth0Client {
 
 
         Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + user.getUserId())
+                .url(issuer + "api/v2/users/" + user.getAuth0Id())
                 .method("PATCH", getRequestBody(jsonData))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", "Bearer " + token)
@@ -127,7 +127,7 @@ public class Auth0Client {
     @SneakyThrows
     public void deleteUser(User user) {
         Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + user.getUserId())
+                .url(issuer + "api/v2/users/" + user.getAuth0Id())
                 .method("DELETE", null)
                 .addHeader("Authorization", "Bearer " + token)
                 .build();

@@ -10,12 +10,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-@ToString
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor
 @Table(name = "questions")
 public class Question {
 
