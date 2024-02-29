@@ -29,6 +29,12 @@ public class UserService {
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 
+    public ResponseEntity<UserDto> getUserByEmail(String email) {
+        User user = auth0Client.getUserByEmail(email);
+
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userRepository.findAll();
         List<UserDto> userDtos = userMapper.toDto(users);

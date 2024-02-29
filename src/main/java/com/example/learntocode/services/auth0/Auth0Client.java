@@ -1,6 +1,7 @@
 package com.example.learntocode.services.auth0;
 
 import com.example.learntocode.models.User;
+import com.example.learntocode.repository.UserRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javassist.NotFoundException;
@@ -18,6 +19,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class Auth0Client {
+
+    private final UserRepository userRepository;
 
     private final OkHttpClient client;
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -50,7 +53,10 @@ public class Auth0Client {
             return null;
         }
 
-        List<User> users = objectMapper.readValue(response.body().string(), objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+        List<User> users = objectMapper
+                .readValue(response.body().string(),
+                        objectMapper.getTypeFactory()
+                                .constructCollectionType(List.class, User.class));
 
         return users;
     }
@@ -85,13 +91,25 @@ public class Auth0Client {
             throw new NotFoundException("User not found with email: " + email);
         }
         if (users.size() == 1) {
+            if (userRepository.existsByEmail(email)) {
+                return userRepository.findByEmail(email).orElse(null);
+            }
+            userRepository.save(users.get(0));
             return users.get(0);
         }
+        int indexOfUserWithAuth0Id = users.stream().filter(user -> user.getAuth0Id().startsWith("auth0")).findFirst().map(users::indexOf).orElse(0);
+        User parentUser = users.get(indexOfUserWithAuth0Id);
+        User childUser = users.get(indexOfUserWithAuth0Id == 0 ? 1 : 0);
+        linkUsers(parentUser, childUser);
 
-        User parentUser = users.stream().filter(user -> user.getAuth0Id().startsWith("auth0")).findFirst().orElse(null);
-        linkUsers(users.get(0), users.get(1));
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            userRepository.save(parentUser);
+            return parentUser;
+        }
 
-        return parentUser;
+        user.setAuth0Id(parentUser.getAuth0Id());
+        return userRepository.save(user);
     }
 
     @SneakyThrows

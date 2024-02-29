@@ -2,6 +2,7 @@ package com.example.learntocode.payload.DTOs;
 
 import com.example.learntocode.models.User;
 import jakarta.validation.constraints.Email;
+import lombok.Data;
 import lombok.Value;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link User}
  */
-@Value
+@Data
 public class UserDto {
     Long id;
     String auth0Id;
