@@ -2,6 +2,7 @@ package com.example.learntocode.services.auth0;
 
 import com.example.learntocode.models.User;
 import com.example.learntocode.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javassist.NotFoundException;
@@ -12,13 +13,22 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+interface UserClient {
+    User getUserByEmail(String email);
+
+    void updateUser(User user);
+
+    void deleteUser(User user);
+}
+
 @Service
 @RequiredArgsConstructor
-public class Auth0Client {
+public class Auth0Client implements UserClient {
 
     private final UserRepository userRepository;
 
@@ -41,47 +51,15 @@ public class Auth0Client {
 
     @SneakyThrows
     private List<User> getUsersByFilter(String q) {
-        Request request = new Request.Builder()
-                .url(issuer + "api/v2/users?q=" + q)
-                .method("GET", null)
-                .addHeader("Accept", "application/json")
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        if (response.body() == null) {
-            return null;
-        }
-
-        List<User> users = objectMapper
-                .readValue(response.body().string(),
-                        objectMapper.getTypeFactory()
-                                .constructCollectionType(List.class, User.class));
-
-        return users;
+        Request request = buildRequest(issuer + "api/v2/users?q=" + q, "GET", null);
+        return executeRequest(request);
     }
 
     @SneakyThrows
     private void linkUsers(User parentUser, User childUser) {
-        String parentUserId = parentUser.getAuth0Id();
-        String childUserId = childUser.getAuth0Id();
-        String childProvider = childUserId.split("\\|")[0];
-
-
-        Map<String, String> jsonMap = new HashMap<>();
-        jsonMap.put("provider", childProvider);
-        jsonMap.put("user_id", childUserId);
-        String jsonData = objectMapper.writeValueAsString(jsonMap);
-
-
-        Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + parentUserId + "/identities")
-                .method("POST", getRequestBody(jsonData))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        String jsonData = buildJsonDataForLinkUsers(childUser);
+        Request request = buildRequest(issuer + "api/v2/users/" + parentUser.getAuth0Id() + "/identities", "POST", jsonData);
+        executeRequest(request);
     }
 
     @SneakyThrows
@@ -90,6 +68,48 @@ public class Auth0Client {
         if (users.isEmpty()) {
             throw new NotFoundException("User not found with email: " + email);
         }
+        return processUsers(users, email);
+    }
+
+    @SneakyThrows
+    public void updateUser(User user) {
+        String jsonData = buildJsonDataForUpdateUser(user);
+        Request request = buildRequest(issuer + "api/v2/users/" + user.getAuth0Id(), "PATCH", jsonData);
+        executeRequest(request);
+    }
+
+    @SneakyThrows
+    public void deleteUser(User user) {
+        Request request = buildRequest(issuer + "api/v2/users/" + user.getAuth0Id(), "DELETE", null);
+        executeRequest(request);
+    }
+
+    private Request buildRequest(String url, String method, String jsonData) {
+        Request.Builder builder = new Request.Builder()
+                .url(url)
+                .method(method, jsonData != null ? getRequestBody(jsonData) : null)
+                .addHeader("Accept", "application/json")
+                .addHeader("Authorization", "Bearer " + token);
+        return builder.build();
+    }
+
+    private List<User> executeRequest(Request request) throws IOException {
+        Response response = client.newCall(request).execute();
+        if (response.body() == null) {
+            return null;
+        }
+        return objectMapper.readValue(response.body().string(),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
+    }
+
+    private String buildJsonDataForLinkUsers(User childUser) throws JsonProcessingException {
+        Map<String, String> jsonMap = new HashMap<>();
+        jsonMap.put("provider", childUser.getAuth0Id().split("\\|")[0]);
+        jsonMap.put("user_id", childUser.getAuth0Id());
+        return objectMapper.writeValueAsString(jsonMap);
+    }
+
+    private User processUsers(List<User> users, String email) {
         if (users.size() == 1) {
             if (userRepository.existsByEmail(email)) {
                 return userRepository.findByEmail(email).orElse(null);
@@ -112,10 +132,8 @@ public class Auth0Client {
         return userRepository.save(user);
     }
 
-    @SneakyThrows
-    public void updateUser(User user) {
+    private String buildJsonDataForUpdateUser(User user) throws JsonProcessingException {
         Map<String, String> jsonMap = new HashMap<>();
-
         jsonMap.put("username", user.getUsername());
         jsonMap.put("nickname", user.getNickname());
         jsonMap.put("email", user.getEmail());
@@ -123,49 +141,8 @@ public class Auth0Client {
         jsonMap.put("picture", user.getPictureUrl());
         jsonMap.put("blocked", String.valueOf(user.isBlocked()));
 
-        for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
-            if (entry.getValue() == null) {
-                jsonMap.remove(entry.getKey());
-            }
-        }
+        jsonMap.entrySet().removeIf(entry -> entry.getValue() == null);
 
-        String jsonData = objectMapper.writeValueAsString(jsonMap);
-
-
-        Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + user.getAuth0Id())
-                .method("PATCH", getRequestBody(jsonData))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        return objectMapper.writeValueAsString(jsonMap);
     }
-
-    @SneakyThrows
-    public void deleteUser(User user) {
-        Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + user.getAuth0Id())
-                .method("DELETE", null)
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        Response response = client.newCall(request).execute();
-    }
-
-/*    @SneakyThrows
-    public void changeUserBanStatus(String userId, boolean blocked) {
-        Map<String, Boolean> jsonMap = new HashMap<>();
-        jsonMap.put("blocked", blocked);
-        String jsonData = objectMapper.writeValueAsString(jsonMap);
-
-        Request request = new Request.Builder()
-                .url(issuer + "api/v2/users/" + userId)
-                .method("PATCH", getRequestBody(jsonData))
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        Response response = client.newCall(request).execute();
-    }*/
 }
