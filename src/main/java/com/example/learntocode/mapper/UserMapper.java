@@ -27,12 +27,11 @@ public class UserMapper {
                 .collect(Collectors.toList());
     }
 
-
     public User toEntity(UserDto dto) {
         return modelMapper.map(dto, User.class);
     }
 
-    public User toEntity(UserDto dto, User user ) {
+    public User toEntity(UserDto dto, User user) {
         modelMapper.map(dto, user);
         return user;
     }
