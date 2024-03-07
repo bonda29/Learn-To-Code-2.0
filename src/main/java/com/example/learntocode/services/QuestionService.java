@@ -6,7 +6,6 @@ import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,39 +20,44 @@ import static com.example.learntocode.util.RepositoryUtil.findById;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
-    private final ModelMapper modelMapper;
 
     public ResponseEntity<MessageResponse> createQuestion(QuestionDto data) {
-        //todo: validate the data
+        validateQuestionData(data);
 
         Question question = questionMapper.toEntity(data);
         questionRepository.save(question);
 
+        System.out.println(question);
         return ResponseEntity.ok(MessageResponse.from("The question has been created successfully!"));
     }
+    //todo: there is a bug here, the tags are not being fetched
 
     public ResponseEntity<QuestionDto> getQuestionById(Long id) {
-        Question question = findById(questionRepository, id);
-        System.out.println("question with id: " + id + " tag: " + question.getTag());
+        var question = questionRepository.findByIdWithTags(id).orElseThrow(() -> new IllegalArgumentException("Question not found"));
+        var tags = question.getTags();
+
+
+        System.out.println("Tags: " + tags);
+
         QuestionDto questionDto = questionMapper.toDto(question);
 
         return ResponseEntity.ok(questionDto);
     }
 
+    //todo: there is a bug here, the tags are not being fetched
     public ResponseEntity<List<QuestionDto>> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
 
-        //todo: there is a bug here, the tags are not being fetched
-
-        questions.forEach(question -> System.out.println("question with id: " + question.getId() + " tag: " + question.getTag()));
 
         List<QuestionDto> questionDtos = questionMapper.toDto(questions);
         return ResponseEntity.ok(questionDtos);
     }
 
     public ResponseEntity<MessageResponse> updateQuestion(Long id, QuestionDto data) {
+        validateQuestionData(data);
+
         Question question = findById(questionRepository, id);
-        question = modelMapper.map(data, Question.class);
+        question = questionMapper.toEntity(data, question);
 
         questionRepository.save(question);
 
@@ -63,5 +67,15 @@ public class QuestionService {
     public ResponseEntity<MessageResponse> deleteQuestion(Long id) {
         questionRepository.deleteById(id);
         return ResponseEntity.ok(MessageResponse.from("The question has been deleted successfully!"));
+    }
+
+    public void validateQuestionData(QuestionDto data) {
+        if (data.getText() == null || data.getText().isEmpty()) {
+            throw new IllegalArgumentException("Question text cannot be null or empty");
+        }
+
+        if (data.getAuthorId() == null) {
+            throw new IllegalArgumentException("Author ID cannot be null");
+        }
     }
 }

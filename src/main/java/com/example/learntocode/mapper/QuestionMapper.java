@@ -2,6 +2,7 @@ package com.example.learntocode.mapper;
 
 
 import com.example.learntocode.models.Question;
+import com.example.learntocode.models.Tag;
 import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.repository.TagRepository;
 import com.example.learntocode.repository.UserRepository;
@@ -30,18 +31,18 @@ public class QuestionMapper {
             @Override
             protected void configure() {
                 map().setAuthorId(source.getAuthor().getId());
-                map().setTagId(source.getTag().getId());
 
+                if (source.getTags() != null) {
+                    map().setTagIds(source.getTags().stream()
+                            .map(Tag::getId)
+                            .collect(Collectors.toSet()));
+                }
             }
         });
     }
 
     public QuestionDto toDto(Question question) {
-        if (question != null) {
-            return modelMapper.map(question, QuestionDto.class);
-        } else {
-            return null;
-        }
+        return modelMapper.map(question, QuestionDto.class);
     }
 
     public List<QuestionDto> toDto(List<Question> questions) {
@@ -53,27 +54,25 @@ public class QuestionMapper {
     public Question toEntity(QuestionDto questionDto) {
         Question question = modelMapper.map(questionDto, Question.class);
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
-        question.setTag(findById(tagRepository, questionDto.getTagId()));
 
-//        if (questionDto.getTagIds() != null) {
-//            question.setTags(questionDto.getTagIds().stream()
-//                    .map(id -> findById(tagRepository, id))
-//                    .collect(Collectors.toSet()));
-//        }
+        if (questionDto.getTagIds() != null) {
+            question.setTags(questionDto.getTagIds().stream()
+                    .map(id -> findById(tagRepository, id))
+                    .collect(Collectors.toSet()));
+        }
+
         return question;
     }
 
     public Question toEntity(QuestionDto questionDto, Question question) {
         modelMapper.map(questionDto, question);
-
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
-        question.setTag(findById(tagRepository, questionDto.getTagId()));
 
-//        if (questionDto.getTagIds() != null) {
-//            question.setTags(questionDto.getTagIds().stream()
-//                    .map(id -> findById(tagRepository, id))
-//                    .collect(Collectors.toSet()));
-//        }
+        if (questionDto.getTagIds() != null) {
+            question.setTags(questionDto.getTagIds().stream()
+                    .map(id -> findById(tagRepository, id))
+                    .collect(Collectors.toSet()));
+        }
         return question;
     }
 }

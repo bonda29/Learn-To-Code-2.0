@@ -2,7 +2,6 @@ package com.example.learntocode.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,15 +29,13 @@ public class Question {
 
     @ManyToOne(optional = false)
     private User author;
-//
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "tag_id", nullable = false)
-//    private Tag tag;
-//
 
-    @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Tag.class)
+    @JoinTable(name = "questions_tags",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new LinkedHashSet<>();
+
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "question_image_urls", joinColumns = @JoinColumn(name = "question_id"))

@@ -38,6 +38,12 @@ public class GlobalErrorHandler {
         return ErrorMessage.from(error.getMessage(), "", "404", request.getRequestURI());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorMessage handleIllegalArgumentException(final HttpServletRequest request, final Exception error) {
+        logger.warning(error.getMessage() + " " + request.getRequestURI() + " " + request.getMethod());
+        return ErrorMessage.from(error.getMessage(), "", "400", request.getRequestURI());
+    }
 
 
 /*    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

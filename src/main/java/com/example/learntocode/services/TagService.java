@@ -65,4 +65,11 @@ public class TagService {
 
         return ResponseEntity.ok(MessageResponse.from("Tag has been deleted successfully."));
     }
+
+//    public ResponseEntity<MessageResponse> addQuestionToTag(Long tagId, Long questionId) {
+//        Tag tag = findById(tagRepository, tagId);
+//        tag.addQuestion(findById(tagRepository, questionId));
+//
+//        return ResponseEntity.ok(MessageResponse.from("Question has been added to the tag successfully."));
+//    }
 }
