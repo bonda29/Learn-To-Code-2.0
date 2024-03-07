@@ -10,13 +10,12 @@ import java.util.Set;
 /**
  * DTO for {@link Question}
  */
-//use @Data because modelMapper won't be able to map the object to the DTO
 @Data
 public class QuestionDto {
     long id;
     String text;
     Long authorId;
-    Set<Long> tagIds;
+    Long tagId;
     List<String> imageUrls;
     LocalDateTime datePublished;
 }

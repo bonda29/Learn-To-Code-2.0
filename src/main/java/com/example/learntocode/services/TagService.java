@@ -5,6 +5,7 @@ import com.example.learntocode.models.Tag;
 import com.example.learntocode.payload.DTOs.TagDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.TagRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import static com.example.learntocode.util.RepositoryUtil.findById;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TagService {
 
@@ -39,6 +41,9 @@ public class TagService {
 
     public ResponseEntity<List<TagDto>> getAllTags() {
         List<Tag> tags = tagRepository.findAll();
+
+        tags.forEach(tag -> System.out.println("tag with id: " + tag.getId() + " questions: " + tag.getQuestions()));
+
         List<TagDto> tagDtos = tagMapper.toDto(tags);
 
         return ResponseEntity.ok(tagDtos);

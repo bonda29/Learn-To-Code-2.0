@@ -3,7 +3,10 @@ package com.example.learntocode.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -13,6 +16,8 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "questions")
 public class Question {
 
@@ -20,20 +25,20 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty(message = "Question is mandatory!")
     @Column(nullable = false)
     private String text;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
     private User author;
+//
+//    @ManyToOne(optional = false)
+//    @JoinColumn(name = "tag_id", nullable = false)
+//    private Tag tag;
+//
 
-    @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinTable(name = "questions_tags",
-            joinColumns = @JoinColumn(name = "question_id"),
-            inverseJoinColumns = @JoinColumn(name = "tags_id"))
-    private Set<Tag> tags = new LinkedHashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "question_image_urls", joinColumns = @JoinColumn(name = "question_id"))

@@ -54,8 +54,4 @@ public class User {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-    public String toJsonAuth0() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
 }

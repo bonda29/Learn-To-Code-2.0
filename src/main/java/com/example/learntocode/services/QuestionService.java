@@ -5,8 +5,6 @@ import com.example.learntocode.models.Question;
 import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.QuestionRepository;
-import com.example.learntocode.repository.TagRepository;
-import com.example.learntocode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +34,7 @@ public class QuestionService {
 
     public ResponseEntity<QuestionDto> getQuestionById(Long id) {
         Question question = findById(questionRepository, id);
+        System.out.println("question with id: " + id + " tag: " + question.getTag());
         QuestionDto questionDto = questionMapper.toDto(question);
 
         return ResponseEntity.ok(questionDto);
@@ -43,6 +42,11 @@ public class QuestionService {
 
     public ResponseEntity<List<QuestionDto>> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
+
+        //todo: there is a bug here, the tags are not being fetched
+
+        questions.forEach(question -> System.out.println("question with id: " + question.getId() + " tag: " + question.getTag()));
+
         List<QuestionDto> questionDtos = questionMapper.toDto(questions);
         return ResponseEntity.ok(questionDtos);
     }

@@ -2,7 +2,6 @@ package com.example.learntocode.mapper;
 
 
 import com.example.learntocode.models.Question;
-import com.example.learntocode.models.Tag;
 import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.repository.TagRepository;
 import com.example.learntocode.repository.UserRepository;
@@ -31,19 +30,18 @@ public class QuestionMapper {
             @Override
             protected void configure() {
                 map().setAuthorId(source.getAuthor().getId());
-                if (source.getTags() != null) {
-                    map().setTagIds(
-                            source.getTags().stream()
-                                    .map(Tag::getId)
-                                    .collect(Collectors.toSet())
-                    );
-                }
+                map().setTagId(source.getTag().getId());
+
             }
         });
     }
 
     public QuestionDto toDto(Question question) {
-        return modelMapper.map(question, QuestionDto.class);
+        if (question != null) {
+            return modelMapper.map(question, QuestionDto.class);
+        } else {
+            return null;
+        }
     }
 
     public List<QuestionDto> toDto(List<Question> questions) {
@@ -55,12 +53,13 @@ public class QuestionMapper {
     public Question toEntity(QuestionDto questionDto) {
         Question question = modelMapper.map(questionDto, Question.class);
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
+        question.setTag(findById(tagRepository, questionDto.getTagId()));
 
-        if (questionDto.getTagIds() != null) {
-            question.setTags(questionDto.getTagIds().stream()
-                    .map(id -> findById(tagRepository, id))
-                    .collect(Collectors.toSet()));
-        }
+//        if (questionDto.getTagIds() != null) {
+//            question.setTags(questionDto.getTagIds().stream()
+//                    .map(id -> findById(tagRepository, id))
+//                    .collect(Collectors.toSet()));
+//        }
         return question;
     }
 
@@ -68,12 +67,13 @@ public class QuestionMapper {
         modelMapper.map(questionDto, question);
 
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
+        question.setTag(findById(tagRepository, questionDto.getTagId()));
 
-        if (questionDto.getTagIds() != null) {
-            question.setTags(questionDto.getTagIds().stream()
-                    .map(id -> findById(tagRepository, id))
-                    .collect(Collectors.toSet()));
-        }
+//        if (questionDto.getTagIds() != null) {
+//            question.setTags(questionDto.getTagIds().stream()
+//                    .map(id -> findById(tagRepository, id))
+//                    .collect(Collectors.toSet()));
+//        }
         return question;
     }
 }

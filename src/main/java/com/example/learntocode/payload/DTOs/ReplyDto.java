@@ -13,6 +13,6 @@ public class
 ReplyDto {
     Long userId;
     String text;
-    LocalDateTime dateOfCreation;
     Long questionId;
+    LocalDateTime dateOfCreation;
 }
