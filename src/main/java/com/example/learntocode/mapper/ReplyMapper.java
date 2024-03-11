@@ -30,7 +30,7 @@ public class ReplyMapper {
         this.modelMapper.addMappings(new PropertyMap<Reply, ReplyDto>() {
             @Override
             protected void configure() {
-                map().setUserId(source.getAuthor().getId());
+                map().setAuthorId(source.getAuthor().getId());
                 map().setQuestionId(source.getQuestion().getId());
             }
         });
@@ -49,7 +49,7 @@ public class ReplyMapper {
 
     public Reply toEntity(ReplyDto replyDto) {
         Reply reply = modelMapper.map(replyDto, Reply.class);
-        reply.setAuthor(findById(userRepository, replyDto.getUserId()));
+        reply.setAuthor(findById(userRepository, replyDto.getAuthorId()));
         reply.setQuestion(findById(questionRepository, replyDto.getQuestionId()));
         return reply;
     }

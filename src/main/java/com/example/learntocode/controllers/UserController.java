@@ -1,5 +1,6 @@
 package com.example.learntocode.controllers;
 
+import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.DTOs.UserDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.services.UserService;
@@ -40,4 +41,8 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
+    @GetMapping("/questions/{id}")
+    public ResponseEntity<List<QuestionDto>> getQuestionsByUserId(@PathVariable Long id) {
+        return userService.getQuestionsByUserId(id);
+    }
 }

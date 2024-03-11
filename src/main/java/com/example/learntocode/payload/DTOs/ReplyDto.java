@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class
 ReplyDto {
-    Long userId;
+    Long authorId;
     String text;
     Long questionId;
     LocalDateTime dateOfCreation;

@@ -26,8 +26,7 @@ public class Question {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @ManyToOne(optional = false)
-    private User author;
+
 
     @ManyToMany
     @JoinTable(name = "questions_tags",
@@ -42,6 +41,10 @@ public class Question {
 
     @Column(name = "date_published")
     private LocalDateTime datePublished;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @PrePersist
     protected void onCreate() {

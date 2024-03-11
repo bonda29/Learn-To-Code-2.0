@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * DTO for {@link User}
@@ -21,6 +22,7 @@ public class UserDto {
     String email;
     String name;
     String pictureUrl;
+    Set<Long> questionIds;
     boolean blocked;
     LocalDateTime createdAt;
 }

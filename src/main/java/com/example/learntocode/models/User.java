@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -42,6 +44,9 @@ public class User {
     @JsonProperty("picture")
     @Column(name = "picture_url")
     private String pictureUrl;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Question> questions = new LinkedHashSet<>();
 
     @Column(name = "blocked", nullable = false, columnDefinition = "boolean default false")
     private boolean blocked;

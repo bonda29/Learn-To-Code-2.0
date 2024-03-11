@@ -1,7 +1,10 @@
 package com.example.learntocode.services;
 
+import com.example.learntocode.mapper.QuestionMapper;
 import com.example.learntocode.mapper.UserMapper;
+import com.example.learntocode.models.Question;
 import com.example.learntocode.models.User;
+import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.DTOs.UserDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.UserRepository;
@@ -22,6 +25,7 @@ import static com.example.learntocode.util.RepositoryUtil.findById;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final QuestionMapper questionMapper;
     private final Auth0Client auth0Client;
 
     public ResponseEntity<UserDto> getUserById(Long id) {
@@ -69,4 +73,14 @@ public class UserService {
         userRepository.delete(user);
         return ResponseEntity.ok(MessageResponse.from("User with id " + user.getAuth0Id() + " has been deleted successfully!"));
     }
+
+    public ResponseEntity<List<QuestionDto>> getQuestionsByUserId(Long id) {
+        User user = findById(userRepository, id);
+        List<Question> questions = (List<Question>) user.getQuestions();
+
+        List<QuestionDto> questionDtos = questionMapper.toDto(questions);
+
+        return ResponseEntity.ok(questionDtos);
+    }
+
 }
