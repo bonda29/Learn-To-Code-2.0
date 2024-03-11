@@ -10,6 +10,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.learntocode.util.RepositoryUtil.findById;
@@ -26,16 +27,21 @@ public class TagMapper {
         this.modelMapper.addMappings(new PropertyMap<Tag, TagDto>() {
             @Override
             protected void configure() {
-                if (source.getQuestions() != null)
-                    map().setQuestionIds(source.getQuestions().stream()
-                            .map(Question::getId)
-                            .collect(Collectors.toSet()));
+
             }
         });
     }
 
     public TagDto toDto(Tag tag) {
-        return modelMapper.map(tag, TagDto.class);
+        TagDto tagDto = modelMapper.map(tag, TagDto.class);
+
+        Set<Long> questionIds = tag.getQuestions().stream()
+                .map(Question::getId)
+                .collect(Collectors.toSet());
+
+        tagDto.setQuestionIds(questionIds);
+
+        return tagDto;
     }
 
     public List<TagDto> toDto(List<Tag> tags) {

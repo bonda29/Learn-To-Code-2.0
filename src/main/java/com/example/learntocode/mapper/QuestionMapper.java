@@ -11,6 +11,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.learntocode.util.RepositoryUtil.findById;
@@ -19,30 +20,29 @@ import static com.example.learntocode.util.RepositoryUtil.findById;
 public class QuestionMapper {
 
     private final ModelMapper modelMapper;
-    private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
 
 
-    public QuestionMapper(ModelMapper modelMapper, UserRepository userRepository, TagRepository tagRepository) {
+    public QuestionMapper(ModelMapper modelMapper, TagRepository tagRepository,
+                          UserRepository userRepository) {
         this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
         this.tagRepository = tagRepository;
-        this.modelMapper.addMappings(new PropertyMap<Question, QuestionDto>() {
-            @Override
-            protected void configure() {
-                map().setAuthorId(source.getAuthor().getId());
-
-                if (source.getTags() != null) {
-                    map().setTagIds(source.getTags().stream()
-                            .map(Tag::getId)
-                            .collect(Collectors.toSet()));
-                }
-            }
-        });
+        this.userRepository = userRepository;
     }
 
     public QuestionDto toDto(Question question) {
-        return modelMapper.map(question, QuestionDto.class);
+        QuestionDto questionDto = modelMapper.map(question, QuestionDto.class);
+
+        questionDto.setAuthorId(question.getAuthor().getId());
+
+        Set<Long> tagIds = question.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        questionDto.setTagIds(tagIds);
+
+
+        return questionDto;
     }
 
     public List<QuestionDto> toDto(List<Question> questions) {
@@ -53,6 +53,7 @@ public class QuestionMapper {
 
     public Question toEntity(QuestionDto questionDto) {
         Question question = modelMapper.map(questionDto, Question.class);
+
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
 
         if (questionDto.getTagIds() != null) {
@@ -66,6 +67,7 @@ public class QuestionMapper {
 
     public Question toEntity(QuestionDto questionDto, Question question) {
         modelMapper.map(questionDto, question);
+
         question.setAuthor(findById(userRepository, questionDto.getAuthorId()));
 
         if (questionDto.getTagIds() != null) {

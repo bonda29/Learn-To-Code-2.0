@@ -27,6 +27,7 @@ public class TagService {
         //todo: validate the data
 
         Tag tag = tagMapper.toEntity(data);
+
         tagRepository.save(tag);
 
         return ResponseEntity.ok(MessageResponse.from("Tag has been created successfully."));
@@ -41,8 +42,6 @@ public class TagService {
 
     public ResponseEntity<List<TagDto>> getAllTags() {
         List<Tag> tags = tagRepository.findAll();
-
-        tags.forEach(tag -> System.out.println("tag with id: " + tag.getId() + " questions: " + tag.getQuestions()));
 
         List<TagDto> tagDtos = tagMapper.toDto(tags);
 

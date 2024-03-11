@@ -1,7 +1,6 @@
 package com.example.learntocode.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.LinkedHashSet;
@@ -11,15 +10,15 @@ import java.util.Set;
 @Entity
 @Table(name = "tags")
 public class Tag {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(unique = true)
-    @NotNull
+    @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags")
     private Set<Question> questions = new LinkedHashSet<>();
+
 }

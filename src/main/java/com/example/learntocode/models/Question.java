@@ -15,27 +15,25 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
 @Table(name = "questions")
 public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "text", nullable = false)
     private String text;
 
     @ManyToOne(optional = false)
     private User author;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Tag.class)
+    @ManyToMany
     @JoinTable(name = "questions_tags",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new LinkedHashSet<>();
-
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "question_image_urls", joinColumns = @JoinColumn(name = "question_id"))
