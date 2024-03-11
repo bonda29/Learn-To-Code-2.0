@@ -45,7 +45,7 @@ public class User {
     @Column(name = "picture_url")
     private String pictureUrl;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Question> questions = new LinkedHashSet<>();
 
     @Column(name = "blocked", nullable = false, columnDefinition = "boolean default false")
