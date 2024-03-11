@@ -38,6 +38,11 @@ public class ReplyController {
         return replyService.getAllReplies();
     }
 
+    @GetMapping("/question/{questionId}")
+    public ResponseEntity<?> getAllRepliesByQuestionId(@PathVariable Long questionId) {
+        return replyService.getAllRepliesByQuestionId(questionId);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponse> updateReply(@PathVariable Long id, @RequestBody Map<String, String> replyMap) {
         return replyService.updateReply(id, replyMap.get("reply"));

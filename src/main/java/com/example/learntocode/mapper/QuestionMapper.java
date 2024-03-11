@@ -2,12 +2,13 @@ package com.example.learntocode.mapper;
 
 
 import com.example.learntocode.models.Question;
+import com.example.learntocode.models.Reply;
 import com.example.learntocode.models.Tag;
 import com.example.learntocode.payload.DTOs.QuestionDto;
+import com.example.learntocode.repository.ReplyRepository;
 import com.example.learntocode.repository.TagRepository;
 import com.example.learntocode.repository.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,13 +22,15 @@ public class QuestionMapper {
 
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
+    private final ReplyRepository replyRepository;
     private final UserRepository userRepository;
 
 
-    public QuestionMapper(ModelMapper modelMapper, TagRepository tagRepository,
+    public QuestionMapper(ModelMapper modelMapper, TagRepository tagRepository, ReplyRepository replyRepository,
                           UserRepository userRepository) {
         this.modelMapper = modelMapper;
         this.tagRepository = tagRepository;
+        this.replyRepository = replyRepository;
         this.userRepository = userRepository;
     }
 
@@ -41,6 +44,10 @@ public class QuestionMapper {
                 .collect(Collectors.toSet());
         questionDto.setTagIds(tagIds);
 
+        Set<Long> replyIds = question.getReplies().stream()
+                .map(Reply::getId)
+                .collect(Collectors.toSet());
+        questionDto.setReplyIds(replyIds);
 
         return questionDto;
     }
@@ -62,6 +69,12 @@ public class QuestionMapper {
                     .collect(Collectors.toSet()));
         }
 
+        if (questionDto.getReplyIds() != null) {
+            question.setReplies(questionDto.getReplyIds().stream()
+                    .map(id -> findById(replyRepository, id))
+                    .collect(Collectors.toSet()));
+        }
+
         return question;
     }
 
@@ -75,6 +88,13 @@ public class QuestionMapper {
                     .map(id -> findById(tagRepository, id))
                     .collect(Collectors.toSet()));
         }
+
+        if (questionDto.getReplyIds() != null) {
+            question.setReplies(questionDto.getReplyIds().stream()
+                    .map(id -> findById(replyRepository, id))
+                    .collect(Collectors.toSet()));
+        }
+
         return question;
     }
 }

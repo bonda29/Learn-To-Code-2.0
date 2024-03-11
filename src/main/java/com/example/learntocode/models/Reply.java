@@ -2,13 +2,14 @@ package com.example.learntocode.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 @Data
@@ -17,10 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "replies")
-
-
 public class Reply {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,9 +34,12 @@ public class Reply {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_id")
-    private Reply parent;
+    @ManyToOne
+    @JoinColumn(name = "parent_reply_id")
+    private Reply parentReply;
+
+    @OneToMany(mappedBy = "parentReply", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Reply> childReplies = new LinkedHashSet<>();
 
     @Column(name = "time_published")
     private LocalDateTime dateOfCreation;

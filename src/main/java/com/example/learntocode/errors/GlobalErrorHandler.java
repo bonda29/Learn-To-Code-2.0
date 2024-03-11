@@ -45,6 +45,13 @@ public class GlobalErrorHandler {
         return ErrorMessage.from(error.getMessage(), "", "400", request.getRequestURI());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidReplyException.class)
+    public ErrorMessage handleInvalidReplyException(final HttpServletRequest request, final Exception error) {
+        logger.warning(error.getMessage() + " " + request.getRequestURI() + " " + request.getMethod());
+        return ErrorMessage.from(error.getMessage(), "", "400", request.getRequestURI());
+    }
+
 
 /*    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)

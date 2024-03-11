@@ -16,6 +16,7 @@ public class QuestionDto {
     String text;
     Long authorId;
     Set<Long> tagIds;
+    Set<Long> replyIds;
     List<String> imageUrls;
     LocalDateTime datePublished;
 }

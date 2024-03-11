@@ -4,77 +4,85 @@ import com.example.learntocode.mapper.ReplyMapper;
 import com.example.learntocode.models.Reply;
 import com.example.learntocode.payload.DTOs.ReplyDto;
 import com.example.learntocode.payload.messages.MessageResponse;
-import com.example.learntocode.repository.QuestionRepository;
 import com.example.learntocode.repository.ReplyRepository;
-import com.example.learntocode.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 import static com.example.learntocode.util.RepositoryUtil.findById;
 
 @Service
-@RequiredArgsConstructor
-public class ReplyService {
+@Transactional
+public class ReplyService extends ReplyCRUD {
 
     private final ReplyRepository replyRepository;
     private final ReplyMapper replyMapper;
-    private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
 
-    public ResponseEntity<MessageResponse> createReply(ReplyDto data) {
-        //todo: validate the data
-
-        Reply reply = replyMapper.toEntity(data);
-        replyRepository.save(reply);
-
-        return ResponseEntity.ok(MessageResponse.from("The reply has been created successfully!"));
+    public ReplyService(ReplyRepository replyRepository, ReplyMapper replyMapper) {
+        super(replyRepository, replyMapper);
+        this.replyRepository = replyRepository;
+        this.replyMapper = replyMapper;
     }
 
     public ResponseEntity<MessageResponse> createChildReply(Long parentId, ReplyDto data) {
-        //todo: validate the data
+        validateReplyDto(data);
 
         Reply child = replyMapper.toEntity(data);
         Reply parent = findById(replyRepository, parentId);
 
-        child.setParent(parent);
+        child.setParentReply(parent);
 
         replyRepository.save(child);
 
         return ResponseEntity.ok(new MessageResponse("The reply has been created successfully!"));
-
     }
 
-    public ResponseEntity<ReplyDto> getReplyById(Long id) {
-        Reply reply = findById(replyRepository, id);
-        ReplyDto replyDto = replyMapper.toDto(reply);
+    public ResponseEntity<?> getAllRepliesByQuestionId(Long questionId) {
+        Optional<List<Reply>> optionalReplies = replyRepository.findAllByQuestionId(questionId);
+        if (optionalReplies.isEmpty()) {
+            return ResponseEntity.badRequest().body(MessageResponse.from("No replies found for the question with id: " + questionId));
+        }
 
-        return ResponseEntity.ok(replyDto);
+        List<ReplyDto> replyDtos = replyMapper.toDto(optionalReplies.get());
+
+        // Create a map to store replies by their IDs
+        Map<Long, ReplyDto> replyMap = new HashMap<>();
+        replyDtos.forEach(replyDto -> replyMap.put(replyDto.getId(), replyDto));
+
+        // Build a hierarchical structure
+        List<ReplyDto> rootReplies = buildReplyTree(replyDtos, replyMap);
+
+        rootReplies.sort(Comparator.comparing(ReplyDto::getDateOfCreation));
+        sortChildReplies(rootReplies);
+
+        return ResponseEntity.ok(rootReplies);
     }
 
-    public ResponseEntity<List<ReplyDto>> getAllReplies() {
-        List<Reply> replies = replyRepository.findAll();
-        List<ReplyDto> replyDtos = replyMapper.toDto(replies);
-
-        return ResponseEntity.ok(replyDtos);
+    private List<ReplyDto> buildReplyTree(List<ReplyDto> replyDtos, Map<Long, ReplyDto> replyMap) {
+        List<ReplyDto> rootReplies = new ArrayList<>();
+        for (ReplyDto replyDto : replyDtos) {
+            Long parentReplyId = replyDto.getParentReplyId();
+            if (parentReplyId == null) {
+                rootReplies.add(replyDto);
+            } else {
+                ReplyDto parentReply = replyMap.get(parentReplyId);
+                if (parentReply != null) {
+                    parentReply.getChildReplies().add(replyDto);
+                }
+            }
+        }
+        return rootReplies;
     }
 
-    public ResponseEntity<MessageResponse> updateReply(Long id, String text) {
-        Reply reply = findById(replyRepository, id);
-
-        reply.setText(text);
-
-        replyRepository.save(reply);
-
-        return ResponseEntity.ok(MessageResponse.from("The reply has been changed successfully!"));
-    }
-
-    public ResponseEntity<MessageResponse> deleteReply(Long id) {
-        replyRepository.deleteById(id);
-
-        return ResponseEntity.ok(MessageResponse.from("The reply has been deleted successfully!"));
+    private void sortChildReplies(List<ReplyDto> replies) {
+        for (ReplyDto reply : replies) {
+            List<ReplyDto> childReplies = new ArrayList<>(reply.getChildReplies());
+            childReplies.sort(Comparator.comparing(ReplyDto::getDateOfCreation));
+            reply.setChildReplies(new HashSet<>(childReplies));
+            sortChildReplies(childReplies);
+        }
     }
 }
 
