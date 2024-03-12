@@ -12,5 +12,6 @@ public enum DotEnv {
     SPRING_MAIL_PASSWORD,
     OPENAI_TOKEN,
     STRIPE_PK,
-    STRIPE_SK
+    STRIPE_SK,
+    WEATHER_API_KEY
 }
