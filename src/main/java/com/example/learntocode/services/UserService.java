@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.example.learntocode.util.RepositoryUtil.findById;
 
@@ -76,9 +78,10 @@ public class UserService {
 
     public ResponseEntity<List<QuestionDto>> getQuestionsByUserId(Long id) {
         User user = findById(userRepository, id);
-        List<Question> questions = (List<Question>) user.getQuestions();
+        Set<Question> questions = user.getQuestions();
+        List<Question> questionList = new ArrayList<>(questions);
 
-        List<QuestionDto> questionDtos = questionMapper.toDto(questions);
+        List<QuestionDto> questionDtos = questionMapper.toDto(questionList);
 
         return ResponseEntity.ok(questionDtos);
     }

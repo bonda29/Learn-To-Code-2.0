@@ -17,7 +17,6 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class ChatBotService {
-
     private static final String systemMessage = """
             You are the best programmers companion. Answer the user's questions using the best practices in programming.
             """;

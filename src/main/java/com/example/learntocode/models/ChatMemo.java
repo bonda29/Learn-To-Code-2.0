@@ -2,12 +2,14 @@ package com.example.learntocode.models;
 
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "chat_memo")

@@ -1,4 +1,4 @@
-package com.example.learntocode.services;
+package com.example.learntocode.services.reply;
 
 import com.example.learntocode.mapper.ReplyMapper;
 import com.example.learntocode.models.Reply;

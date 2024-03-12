@@ -1,4 +1,4 @@
-package com.example.learntocode.services;
+package com.example.learntocode.services.reply;
 
 import com.example.learntocode.errors.InvalidReplyException;
 import com.example.learntocode.mapper.ReplyMapper;

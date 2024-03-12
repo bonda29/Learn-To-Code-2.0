@@ -2,7 +2,7 @@ package com.example.learntocode.controllers;
 
 import com.example.learntocode.payload.DTOs.ReplyDto;
 import com.example.learntocode.payload.messages.MessageResponse;
-import com.example.learntocode.services.ReplyService;
+import com.example.learntocode.services.reply.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

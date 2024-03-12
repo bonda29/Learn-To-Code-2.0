@@ -31,7 +31,6 @@ public class QuestionService {
 
         return ResponseEntity.ok(MessageResponse.from("The question has been created successfully!"));
     }
-    //todo: there is a bug here, the tags and replies are not being fetched
 
     public ResponseEntity<QuestionDto> getQuestionById(Long id) {
         var question = findById(questionRepository, id);
@@ -43,7 +42,6 @@ public class QuestionService {
         return ResponseEntity.ok(questionDto);
     }
 
-    //todo: there is a bug here, the tags are not being fetched
     public ResponseEntity<List<QuestionDto>> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
 

@@ -24,8 +24,6 @@ public class TagService {
     private final TagMapper tagMapper;
 
     public ResponseEntity<MessageResponse> createTag(TagDto data) {
-        //todo: validate the data
-
         Tag tag = tagMapper.toEntity(data);
 
         tagRepository.save(tag);
@@ -49,8 +47,6 @@ public class TagService {
     }
 
     public ResponseEntity<MessageResponse> updateTagName(Long id, String name) {
-        //todo: validate the data
-
         Tag tag = findById(tagRepository, id);
 
         tag.setName(name);
@@ -64,11 +60,4 @@ public class TagService {
 
         return ResponseEntity.ok(MessageResponse.from("Tag has been deleted successfully."));
     }
-
-//    public ResponseEntity<MessageResponse> addQuestionToTag(Long tagId, Long questionId) {
-//        Tag tag = findById(tagRepository, tagId);
-//        tag.addQuestion(findById(tagRepository, questionId));
-//
-//        return ResponseEntity.ok(MessageResponse.from("Question has been added to the tag successfully."));
-//    }
 }
