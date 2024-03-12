@@ -2,23 +2,17 @@ package com.example.learntocode.services;
 
 import com.example.learntocode.mapper.QuestionMapper;
 import com.example.learntocode.models.Question;
+import com.example.learntocode.models.Reply;
 import com.example.learntocode.models.Tag;
 import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.QuestionRepository;
-import com.example.learntocode.repository.TagRepository;
-import com.example.learntocode.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.example.learntocode.util.RepositoryUtil.findById;
 
@@ -37,14 +31,12 @@ public class QuestionService {
 
         return ResponseEntity.ok(MessageResponse.from("The question has been created successfully!"));
     }
-    //todo: there is a bug here, the tags are not being fetched
+    //todo: there is a bug here, the tags and replies are not being fetched
 
     public ResponseEntity<QuestionDto> getQuestionById(Long id) {
-        var question = questionRepository.findByIdWithTags(id).orElseThrow(() -> new IllegalArgumentException("Question not found"));
-        var tags = question.getTags();
-
-
-        System.out.println("Tags: " + tags);
+        var question = findById(questionRepository, id);
+        System.out.println("Tags: " + question.getTags().stream().map(Tag::getId).toList());
+        System.out.println("Replies: " + question.getReplies().stream().map(Reply::getId).toList());
 
         QuestionDto questionDto = questionMapper.toDto(question);
 
