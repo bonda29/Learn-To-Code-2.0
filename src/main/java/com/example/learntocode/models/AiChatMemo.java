@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "chat_memo")
-public class ChatMemo {
+@Table(name = "ai_chat_memo")
+public class AiChatMemo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
