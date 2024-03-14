@@ -8,4 +8,6 @@ public interface UserClient {
     void updateUser(User user);
 
     void deleteUser(User user);
+
+    User getUserByAccessToken(String token);
 }

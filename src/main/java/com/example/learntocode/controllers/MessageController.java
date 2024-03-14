@@ -1,44 +1,50 @@
 package com.example.learntocode.controllers;
 
+import com.example.learntocode.payload.DTOs.DirectMessageDto;
 import com.example.learntocode.payload.messages.MessageResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.learntocode.services.messages.MessageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/messages")
 public class MessageController {
 
-    @GetMapping("/public")
-    public MessageResponse getPublic() {
-        return MessageResponse.from("This is a public message.");
+    private final MessageService messageService;
+
+
+    @PostMapping("/")
+    public ResponseEntity<MessageResponse> sendMessage(@RequestBody DirectMessageDto message) {
+        return messageService.createDirectMessage(message);
     }
 
-    @GetMapping("/protected")
-    public MessageResponse getProtected(HttpServletRequest request) {
-
-        Map<String, String> map = new HashMap<>();
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = headerNames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-        System.out.println(map.get("authorization"));
-
-        return MessageResponse.from("This is a protected message.");
+    @GetMapping("/{id}")
+    public ResponseEntity<DirectMessageDto> getMessage(@PathVariable Long id) {
+        return messageService.getDirectMessageById(id);
     }
 
-    @GetMapping("/admin")
-    public MessageResponse getAdmin() {
-        return MessageResponse.from("This is an admin message.");
+    @GetMapping("/history")
+    public ResponseEntity<List<DirectMessageDto>> getChatHistory(@RequestParam Long senderId, @RequestParam Long receiverId) {
+        return messageService.getChatHistory(senderId, receiverId);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageResponse> updateMessage(@PathVariable Long id, @RequestBody DirectMessageDto message) {
+        return messageService.updateDirectMessage(id, message);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteMessage(@PathVariable Long id) {
+        return messageService.deleteDirectMessage(id);
+    }
+
+    @GetMapping("/start-listening")
+    public ResponseEntity<MessageResponse> startListening(@RequestParam String userId) {
+        messageService.startListening(userId);
+        return ResponseEntity.ok(MessageResponse.from("Listening started"));
     }
 }

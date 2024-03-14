@@ -67,6 +67,15 @@ public class Auth0Client implements UserClient {
     }
 
     @SneakyThrows
+    public User getUserByAccessToken(String token) {
+        Request request = buildRequest(issuer + "userinfo", "GET", null);
+        String email = executeRequest(request).get(0).getEmail();
+        User user = getUserByEmail(email);
+
+        return user;
+    }
+
+    @SneakyThrows
     private List<User> getUsersByFilter(String q) {
         Request request = buildRequest(issuer + "api/v2/users?q=" + q, "GET", null);
         return executeRequest(request);

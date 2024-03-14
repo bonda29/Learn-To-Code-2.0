@@ -16,7 +16,9 @@ public class AiService {
 
     private static final String model = "gpt-3.5-turbo-0613";
     private static final int numberOfResponses = 1;
-    private static final int maxTokens = 150;
+
+    @Value("${openai.api.max-tokens}")
+    private int maxTokens;
 
     @Value("${openai.api.key}")
     private String token;

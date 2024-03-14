@@ -16,7 +16,7 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ChatBotService {
+public class AiChatBotService {
     private static final String systemMessage = """
             You are the best programmers companion. Answer the user's questions using the best practices in programming.
             """;
@@ -41,6 +41,7 @@ public class ChatBotService {
         messages.addAll(AIChatMemoMapper.toChatMessages(previousMessages));
 
         ChatMessage responseFromAi = openAiService.getChatResponse(messages);
+        System.out.println(responseFromAi);
 
         var response = AIChatMemoMapper.toEntity(responseFromAi, chatMemo.getSessionId());
         chatMemoRepository.saveAndIncrementOrder(response);

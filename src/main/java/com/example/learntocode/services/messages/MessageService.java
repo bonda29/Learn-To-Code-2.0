@@ -1,8 +1,9 @@
-package com.example.learntocode.services.chat;
+package com.example.learntocode.services.messages;
 
 import com.example.learntocode.mapper.DirectMessageMapper;
 import com.example.learntocode.models.DirectMessage;
-import com.example.learntocode.models.DirectMessageDto;
+import com.example.learntocode.payload.DTOs.DirectMessageDto;
+import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.DirectMessageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +17,27 @@ import static com.example.learntocode.util.RepositoryUtil.findById;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ChatService {
+public class MessageService {
     private final DirectMessageMapper directMessageMapper;
     private final DirectMessageRepository directMessageRepository;
+    private final MessageSender messageSender;
+    private final MessageReceiver messageReceiver;
 
-    public ResponseEntity<?> createDirectMessage(DirectMessageDto data) {
+    public ResponseEntity<MessageResponse> createDirectMessage(DirectMessageDto data) {
         //todo: validate data
         DirectMessage directMessage = directMessageMapper.toEntity(data);
 
         directMessageRepository.save(directMessage);
+        messageSender.sendMessage(data);
 
-        return ResponseEntity.ok("Message sent successfully");
+        return ResponseEntity.ok(MessageResponse.from("Message sent successfully"));
     }
 
-    public ResponseEntity<?> getDirectMessageById(Long id) {
+    public ResponseEntity<DirectMessageDto> getDirectMessageById(Long id) {
         return ResponseEntity.ok(directMessageMapper.toDto(findById(directMessageRepository, id)));
     }
 
-    public ResponseEntity<?> getChatHistory(Long senderId, Long receiverId) {
+    public ResponseEntity<List<DirectMessageDto>> getChatHistory(Long senderId, Long receiverId) {
         List<DirectMessage> directMessages = directMessageRepository.findAllBySenderIdAndReceiverId(senderId, receiverId)
                 .orElse(List.of());
 
@@ -42,18 +46,22 @@ public class ChatService {
         return ResponseEntity.ok(directMessageDtos);
     }
 
-    public ResponseEntity<?> updateDirectMessage(Long id, DirectMessageDto data) {
+    public ResponseEntity<MessageResponse> updateDirectMessage(Long id, DirectMessageDto data) {
         DirectMessage directMessage = findById(directMessageRepository, id);
 
         directMessage.setContent(data.getContent());
         directMessage.setEdited(true);
 
         directMessageRepository.save(directMessage);
-        return ResponseEntity.ok("Message updated successfully");
+        return ResponseEntity.ok(MessageResponse.from("Message updated successfully"));
     }
 
-    public ResponseEntity<?> deleteDirectMessage(Long id) {
+    public ResponseEntity<MessageResponse> deleteDirectMessage(Long id) {
         directMessageRepository.deleteById(id);
-        return ResponseEntity.ok("Message deleted successfully");
+        return ResponseEntity.ok(MessageResponse.from("Message deleted successfully"));
+    }
+
+    public void startListening(String userId) {
+        messageReceiver.startListening(userId);
     }
 }
