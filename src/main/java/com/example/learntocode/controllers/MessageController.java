@@ -18,8 +18,9 @@ public class MessageController {
 
 
     @PostMapping("/")
-    public ResponseEntity<MessageResponse> sendMessage(@RequestBody DirectMessageDto message) {
-        return messageService.createDirectMessage(message);
+    public ResponseEntity<?> sendMessage(@RequestBody DirectMessageDto message) {
+        messageService.createDirectMessage(message);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -40,11 +41,5 @@ public class MessageController {
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteMessage(@PathVariable Long id) {
         return messageService.deleteDirectMessage(id);
-    }
-
-    @GetMapping("/start-listening")
-    public ResponseEntity<MessageResponse> startListening(@RequestParam String userId) {
-        messageService.startListening(userId);
-        return ResponseEntity.ok(MessageResponse.from("Listening started"));
     }
 }

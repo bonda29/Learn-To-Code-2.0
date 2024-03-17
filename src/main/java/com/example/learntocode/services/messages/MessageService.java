@@ -28,7 +28,7 @@ public class MessageService {
         DirectMessage directMessage = directMessageMapper.toEntity(data);
 
         directMessageRepository.save(directMessage);
-        messageSender.sendMessage(data);
+        messageSender.sendDirectMessage(directMessageMapper.toDto(directMessage));
 
         return ResponseEntity.ok(MessageResponse.from("Message sent successfully"));
     }
@@ -59,9 +59,5 @@ public class MessageService {
     public ResponseEntity<MessageResponse> deleteDirectMessage(Long id) {
         directMessageRepository.deleteById(id);
         return ResponseEntity.ok(MessageResponse.from("Message deleted successfully"));
-    }
-
-    public void startListening(String userId) {
-        messageReceiver.startListening(userId);
     }
 }

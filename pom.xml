@@ -155,12 +155,6 @@
         </dependency>
 
         <!-- RabbitMq Client -->
-        <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
-<!--        <dependency>-->
-<!--            <groupId>com.rabbitmq</groupId>-->
-<!--            <artifactId>amqp-client</artifactId>-->
-<!--            <version>5.20.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
@@ -187,6 +181,10 @@
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
             <version>3.14.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
         <dependency>
