@@ -1,5 +1,6 @@
-#Docker file to initialize mysql and phpmyadmin
+#Docker file to initialize mysql, phpmyadmin and rabbitmq
 version: '3.8'
+name: learn_to_code
 
 services:
   mysql:
@@ -26,6 +27,16 @@ services:
       PMA_PASSWORD: root
     depends_on:
       - mysql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
   mysql_data:
