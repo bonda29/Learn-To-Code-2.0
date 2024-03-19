@@ -8,6 +8,7 @@ import com.example.learntocode.repository.ChatMemoRepository;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +52,10 @@ public class AiChatBotService {
         responseMap.put("response", AIChatMemoMapper.toDto(response));
 
         return responseMap;
+    }
+
+    public ResponseEntity<List<ChatMemoDto>> getFirstMessageOfEachSessionByUserId(Long userId) {
+        List<ChatMemoDto> response = AIChatMemoMapper.toDto(chatMemoRepository.findFirstMessageOfEachSessionByUserId(userId));
+        return ResponseEntity.ok(response);
     }
 }
