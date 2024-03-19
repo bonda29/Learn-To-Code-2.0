@@ -18,9 +18,7 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class AiChatBotService {
-    private static final String systemMessage = """
-            You are the best programmers companion. Answer the user's questions using the best practices in programming.
-            """;
+    private static final String systemMessage = "You are the best programmers companion. Answer the user's questions using the best practices in programming.";
     private final ChatMemoRepository chatMemoRepository;
     private final AIChatMemoMapper AIChatMemoMapper;
     private final AiService openAiService;

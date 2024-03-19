@@ -16,11 +16,9 @@ public interface ChatMemoRepository extends JpaRepository<AiChatMemo, Long> {
 
     Optional<List<AiChatMemo>> findAllByAuthorId(Long authorId);
 
-    @Query("""
-    SELECT c FROM AiChatMemo c 
-    WHERE c.author.id = :userId AND c.order =
-     (SELECT MIN(c2.order) FROM AiChatMemo c2 WHERE c2.sessionId = c.sessionId AND c2.author.id = :userId)
-    """)
+    @Query("SELECT c FROM AiChatMemo c " +
+            "WHERE c.author.id = :userId AND c.order = " +
+            "(SELECT MIN(c2.order) FROM AiChatMemo c2 WHERE c2.sessionId = c.sessionId AND c2.author.id = :userId)")
     List<AiChatMemo> findFirstMessageOfEachSessionByUserId(@Param("userId") Long userId);
 
     Optional<List<AiChatMemo>> findBySessionId(String sessionId);
