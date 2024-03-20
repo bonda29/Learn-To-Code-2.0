@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.learntocode.models.enums.Status.ONLINE;
 import static com.example.learntocode.util.RepositoryUtil.findById;
 
 
@@ -86,4 +87,11 @@ public class UserService {
         return ResponseEntity.ok(questionDtos);
     }
 
+    public ResponseEntity<List<UserDto>> getConnectedUsers() {
+        List<User> connectedUsers = userRepository.findAllByStatus(ONLINE).orElse(null);
+        if (connectedUsers == null) {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+        return ResponseEntity.ok(userMapper.toDto(connectedUsers));
+    }
 }

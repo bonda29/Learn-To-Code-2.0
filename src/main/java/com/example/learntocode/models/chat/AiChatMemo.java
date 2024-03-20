@@ -1,5 +1,6 @@
-package com.example.learntocode.models;
+package com.example.learntocode.models.chat;
 
+import com.example.learntocode.models.User;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import jakarta.persistence.*;
 import lombok.Getter;

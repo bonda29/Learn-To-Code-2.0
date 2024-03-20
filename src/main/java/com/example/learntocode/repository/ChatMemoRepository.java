@@ -1,6 +1,6 @@
 package com.example.learntocode.repository;
 
-import com.example.learntocode.models.AiChatMemo;
+import com.example.learntocode.models.chat.AiChatMemo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,5 +1,7 @@
 package com.example.learntocode.models;
 
+import com.example.learntocode.models.chat.ChatRoom;
+import com.example.learntocode.models.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import jakarta.persistence.*;
@@ -53,6 +55,11 @@ public class User {
     @JsonProperty("created_at")
     @Column(name = "date_of_creation")
     private LocalDateTime createdAt;
+
+    private Status status;
+
+    @ManyToMany(mappedBy = "participants")
+    private Set<ChatRoom> chatRooms = new LinkedHashSet<>();
 
     public String toJson() {
         Gson gson = new Gson();

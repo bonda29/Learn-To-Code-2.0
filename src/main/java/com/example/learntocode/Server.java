@@ -1,6 +1,6 @@
 package com.example.learntocode;
 
-import com.example.learntocode.models.DotEnv;
+import com.example.learntocode.models.enums.DotEnv;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;

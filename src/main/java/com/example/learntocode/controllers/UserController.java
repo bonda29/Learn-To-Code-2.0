@@ -31,6 +31,12 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<List<UserDto>> getConnectedUsers() {
+        return userService.getConnectedUsers();
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponse> updateUser(@PathVariable Long id, @RequestBody UserDto data) {
         return userService.updateUser(id, data);
@@ -45,4 +51,6 @@ public class UserController {
     public ResponseEntity<List<QuestionDto>> getQuestionsByUserId(@PathVariable Long id) {
         return userService.getQuestionsByUserId(id);
     }
+
+
 }

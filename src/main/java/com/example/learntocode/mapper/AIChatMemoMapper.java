@@ -1,6 +1,6 @@
 package com.example.learntocode.mapper;
 
-import com.example.learntocode.models.AiChatMemo;
+import com.example.learntocode.models.chat.AiChatMemo;
 import com.example.learntocode.payload.DTOs.ChatMemoDto;
 import com.example.learntocode.repository.UserRepository;
 import com.theokanning.openai.completion.chat.ChatMessage;

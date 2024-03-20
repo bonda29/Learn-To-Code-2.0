@@ -1,4 +1,4 @@
-package com.example.learntocode.models;
+package com.example.learntocode.models.enums;
 
 public enum DotEnv {
     PORT,

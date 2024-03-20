@@ -1,6 +1,6 @@
 package com.example.learntocode.payload.DTOs;
 
-import com.example.learntocode.models.AiChatMemo;
+import com.example.learntocode.models.chat.AiChatMemo;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import lombok.Data;
 

@@ -1,6 +1,7 @@
 package com.example.learntocode.payload.DTOs;
 
 import com.example.learntocode.models.User;
+import com.example.learntocode.models.enums.Status;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.Value;
@@ -25,4 +26,5 @@ public class UserDto {
     Set<Long> questionIds;
     boolean blocked;
     LocalDateTime createdAt;
+    Status status;
 }

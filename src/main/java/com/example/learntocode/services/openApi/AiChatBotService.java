@@ -2,7 +2,7 @@ package com.example.learntocode.services.openApi;
 
 
 import com.example.learntocode.mapper.AIChatMemoMapper;
-import com.example.learntocode.models.AiChatMemo;
+import com.example.learntocode.models.chat.AiChatMemo;
 import com.example.learntocode.payload.DTOs.ChatMemoDto;
 import com.example.learntocode.repository.ChatMemoRepository;
 import com.theokanning.openai.completion.chat.ChatMessage;
