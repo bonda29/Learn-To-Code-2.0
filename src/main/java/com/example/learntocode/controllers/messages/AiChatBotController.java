@@ -17,10 +17,9 @@ import java.util.Map;
 public class AiChatBotController {
 
     private final AiChatBotService aiChatBotService;
-    private final UserClient userClient;
 
     @PostMapping("/chat")
-    public Map<String, ChatMemoDto> getChatResponse(@RequestBody ChatMemoDto data, HttpServletRequest request) {
+    public Map<String, ChatMemoDto> getChatResponse(@RequestBody ChatMemoDto data) {
         return aiChatBotService.createChatMemo(data);
     }
 
