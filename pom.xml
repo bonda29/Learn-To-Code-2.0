@@ -154,13 +154,6 @@
             <version>RELEASE</version>
         </dependency>
 
-        <!-- RabbitMq Client -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-            <version>3.2.3</version>
-        </dependency>
-
         <!-- Other Utilities -->
         <dependency>
             <groupId>org.modelmapper</groupId>

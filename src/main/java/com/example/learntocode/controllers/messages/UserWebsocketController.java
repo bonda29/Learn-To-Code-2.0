@@ -1,4 +1,4 @@
-package com.example.learntocode.controllers.websocket;
+package com.example.learntocode.controllers.messages;
 
 import com.example.learntocode.payload.DTOs.UserDto;
 import com.example.learntocode.services.websocket.UserWebsocketService;

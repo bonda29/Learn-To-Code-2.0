@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 public class QuestionDto {
     long id;
+    String title;
     String text;
     Long authorId;
     Set<Long> tagIds;

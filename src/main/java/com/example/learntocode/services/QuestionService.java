@@ -67,6 +67,9 @@ public class QuestionService {
     }
 
     public void validateQuestionData(QuestionDto data) {
+        if (data.getTitle() == null || data.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Question title cannot be null or empty");
+        }
         if (data.getText() == null || data.getText().isEmpty()) {
             throw new IllegalArgumentException("Question text cannot be null or empty");
         }

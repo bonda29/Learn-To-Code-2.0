@@ -1,17 +1,15 @@
 package com.example.learntocode.models.chat;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ChatNotification {
-    private String id;
-    private String senderId;
-    private String recipientId;
+    private Long id;
+    private Long senderId;
+    private Long recipientId;
     private String content;
 }
