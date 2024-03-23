@@ -34,8 +34,6 @@ public class QuestionService {
 
     public ResponseEntity<QuestionDto> getQuestionById(Long id) {
         var question = findById(questionRepository, id);
-        System.out.println("Tags: " + question.getTags().stream().map(Tag::getId).toList());
-        System.out.println("Replies: " + question.getReplies().stream().map(Reply::getId).toList());
 
         QuestionDto questionDto = questionMapper.toDto(question);
 
@@ -74,7 +72,7 @@ public class QuestionService {
         return ResponseEntity.ok(MessageResponse.from("The question has been deleted successfully!"));
     }
 
-    public void validateQuestionData(QuestionDto data) {
+    private void validateQuestionData(QuestionDto data) {
         if (data.getTitle() == null || data.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Question title cannot be null or empty");
         }
