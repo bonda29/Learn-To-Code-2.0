@@ -23,5 +23,4 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags")
     private Set<Question> questions = new LinkedHashSet<>();
-
 }

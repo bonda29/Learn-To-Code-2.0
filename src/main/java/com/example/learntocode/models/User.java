@@ -1,9 +1,7 @@
 package com.example.learntocode.models;
 
-import com.example.learntocode.models.chat.ChatRoom;
 import com.example.learntocode.models.enums.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.Gson;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -58,11 +56,6 @@ public class User {
 
     private Status status;
 
-    @ManyToMany(mappedBy = "participants")
-    private Set<ChatRoom> chatRooms = new LinkedHashSet<>();
-
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
+//    @ManyToMany(mappedBy = "participants")
+//    private Set<ChatRoom> chatRooms = new LinkedHashSet<>();
 }

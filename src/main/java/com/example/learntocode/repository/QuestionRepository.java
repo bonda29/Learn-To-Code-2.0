@@ -14,8 +14,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT q FROM Question q LEFT JOIN FETCH q.tags WHERE q.id = :id")
     Optional<Question> findByIdWithTags(@Param("id") Long id);
 
-    @Query("SELECT q FROM Question q JOIN q.tags t WHERE t.id IN :tagIds")
-    Optional<List<Question>> findByTagIds(@Param("tagIds") List<Long> tagIds);
-
-
+    @Query("SELECT q FROM Question q JOIN q.tags t WHERE t.id IN :tagIds GROUP BY q HAVING COUNT(DISTINCT t.id) = :tagCount")
+    Optional<List<Question>> findByTagIds(@Param("tagIds") List<Long> tagIds, @Param("tagCount") Long tagCount);
 }

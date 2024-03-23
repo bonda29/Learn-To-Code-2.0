@@ -38,8 +38,6 @@ public class DirectMessage {
     @Column(name = "is_read", columnDefinition = "boolean default false")
     private boolean isRead;
 
-
-
     @PrePersist
     protected void onCreate() {
         this.timestamp = new Timestamp(System.currentTimeMillis());

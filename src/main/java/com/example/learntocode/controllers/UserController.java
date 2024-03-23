@@ -31,10 +31,10 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<List<UserDto>> getConnectedUsers() {
-        return userService.getConnectedUsers();
-    }
+//    @GetMapping("/status")
+//    public ResponseEntity<List<UserDto>> getConnectedUsers() {
+//        return userService.getConnectedUsers();
+//    }
 
 
     @PutMapping("/{id}")
