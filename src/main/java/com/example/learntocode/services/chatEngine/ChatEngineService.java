@@ -45,7 +45,7 @@ public class ChatEngineService {
         );
 
         Map<String, Object> body = Map.of(
-                "username", user.getUsername(),
+                "username", user.getNickname(),
                 "email", user.getEmail(),
                 "secret", secret
         );
