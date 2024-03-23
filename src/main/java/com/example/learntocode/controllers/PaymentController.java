@@ -17,7 +17,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
 
-    @PostMapping("/create-payment-intent")
+    @PostMapping("/api/donate")
     public ResponseEntity<Map<String, String>> createPaymentIntent(@RequestBody Map<String, Integer> amount) throws StripeException {
         String url = paymentService.createCheckoutSession(Long.valueOf(amount.get("amount")));
         return ResponseEntity.ok(Map.of("url", url));
