@@ -2,7 +2,6 @@ package com.example.learntocode.config.security;
 
 import com.example.learntocode.payload.messages.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class AuthenticationErrorHandler implements AuthenticationEntryPoint {
     private final ObjectMapper mapper;
 
     @Override
-    public void commence(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException authException) throws IOException, ServletException {
+    public void commence(final HttpServletRequest request, final HttpServletResponse response, final AuthenticationException authException) throws IOException {
         final var errorMessage = ErrorMessage.from("Requires authentication");
         final var json = mapper.writeValueAsString(errorMessage);
 

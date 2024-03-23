@@ -36,6 +36,29 @@ public class ChatEngineService {
     private String apiKey;
 
     @SneakyThrows
+    public void createUser(User user) {
+        String url = apiUrl + "users/";
+
+        Map<String, String> headers = Map.of(
+                "PRIVATE-KEY", apiKey,
+                "Content-Type", "application/json"
+        );
+
+        Map<String, Object> body = Map.of(
+                "username", user.getUsername(),
+                "email", user.getEmail(),
+                "secret", secret
+        );
+        String jsonBody = objectMapper.writeValueAsString(body);
+
+        Response response = makeRequest(url, HttpMethod.POST, headers, jsonBody);
+
+        if (response.code() != 201) {
+            throw new RuntimeException("Failed to create user" + response.body().string());
+        }
+    }
+
+    @SneakyThrows
     public ResponseEntity<?> getOrCreateUsers(Long userId) {
         String url = apiUrl + "users/";
         User user = findById(userRepository, userId);

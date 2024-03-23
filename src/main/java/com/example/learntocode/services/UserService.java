@@ -9,6 +9,7 @@ import com.example.learntocode.payload.DTOs.UserDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.repository.UserRepository;
 import com.example.learntocode.services.auth0.Auth0Client;
+import com.example.learntocode.services.chatEngine.ChatEngineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final QuestionMapper questionMapper;
     private final Auth0Client auth0Client;
+    private final ChatEngineService chatEngineService;
 
     public ResponseEntity<UserDto> getUserById(Long id) {
         User user = findById(userRepository, id);
@@ -37,7 +39,12 @@ public class UserService {
     }
 
     public ResponseEntity<UserDto> getUserByEmail(String email) {
+        boolean userExists = userRepository.existsByEmail(email);
         User user = auth0Client.getUserByEmail(email);
+        if (!userExists) {
+            chatEngineService.createUser(user);
+        }
+
 
         return ResponseEntity.ok(userMapper.toDto(user));
     }

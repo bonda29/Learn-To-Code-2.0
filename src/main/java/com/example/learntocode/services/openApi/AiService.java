@@ -21,11 +21,14 @@ public class AiService {
     @Value("${openai.api.max-tokens}")
     private int maxTokens;
 
+    @Value("${openai.api.max-duration}")
+    private String maxDuration;
+
     @Value("${openai.api.key}")
     private String token;
 
     public ChatMessage getChatResponse(List<ChatMessage> messages) {
-        Duration timeout = Duration.ofSeconds(60);
+        Duration timeout = Duration.ofSeconds(Long.parseLong(maxDuration));
         OpenAiService service = new OpenAiService(token, timeout);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest

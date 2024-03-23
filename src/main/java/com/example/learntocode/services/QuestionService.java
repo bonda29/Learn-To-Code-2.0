@@ -42,6 +42,14 @@ public class QuestionService {
         return ResponseEntity.ok(questionDto);
     }
 
+    public ResponseEntity<List<QuestionDto>> getQuestionsByTagIds(List<Long> tagIds) {
+        List<Question> questions = questionRepository.findByTagIds(tagIds).orElse(List.of());
+
+        List<QuestionDto> questionDtos = questionMapper.toDto(questions);
+
+        return ResponseEntity.ok(questionDtos);
+    }
+
     public ResponseEntity<List<QuestionDto>> getAllQuestions() {
         List<Question> questions = questionRepository.findAll();
 

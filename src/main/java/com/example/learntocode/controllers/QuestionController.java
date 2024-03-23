@@ -1,15 +1,15 @@
 package com.example.learntocode.controllers;
 
 
+import com.example.learntocode.payload.DTOs.QuestionDto;
 import com.example.learntocode.payload.messages.MessageResponse;
 import com.example.learntocode.services.QuestionService;
 import lombok.RequiredArgsConstructor;
-import com.example.learntocode.payload.DTOs.QuestionDto;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +29,13 @@ public class QuestionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<QuestionDto>> getAllQuestions() {
+    public ResponseEntity<List<QuestionDto>> getAllQuestions(@RequestParam(required = false) String tag) {
+        if (tag != null) {
+            List<Long> tagIds = Stream.of(tag.split(","))
+                    .map(Long::parseLong)
+                    .toList();
+            return questionService.getQuestionsByTagIds(tagIds);
+        }
         return questionService.getAllQuestions();
     }
 

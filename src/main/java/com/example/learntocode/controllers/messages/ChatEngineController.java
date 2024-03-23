@@ -1,4 +1,4 @@
-package com.example.learntocode.controllers;
+package com.example.learntocode.controllers.messages;
 
 import com.example.learntocode.services.chatEngine.ChatEngineService;
 import lombok.RequiredArgsConstructor;
