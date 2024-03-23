@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class AiService {
     private String token;
 
     public ChatMessage getChatResponse(List<ChatMessage> messages) {
-        OpenAiService service = new OpenAiService(token);
+        Duration timeout = Duration.ofSeconds(60);
+        OpenAiService service = new OpenAiService(token, timeout);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()

@@ -25,7 +25,7 @@ public class Reply {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @Column(nullable = false)
+    @Column(name = "text", nullable = false, columnDefinition = "TEXT")
     private String text;
 
     @ManyToOne(optional = false)

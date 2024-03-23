@@ -2,7 +2,6 @@ package com.example.learntocode.models;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +24,7 @@ public class Question {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", nullable = false, columnDefinition = "TEXT")
     private String text;
 
     @ManyToOne(optional = false)
