@@ -16,31 +16,25 @@ Before running the application, ensure you have the following installed:
 - Java Development Kit (JDK) 17 or later
 - Maven for dependency management and running the application
 - An IDE of your choice (e.g., IntelliJ IDEA, Eclipse, VSCode)
-- A MySQL database server (docker-compose file provided)
-
-Replace the placeholders with your actual configuration values.
-
-
+- A hosted MS SQL Server
 
 ## Running the Application
 
 1. Clone the repository to your local machine.
 2. Navigate to the root directory of the project in your terminal or command prompt.
-3. Ensure your MySQL database is running and accessible with the credentials provided in the `.env` file.
-4. Run the following command to install the project dependencies:
+3. Run the following command to install the project dependencies:
    ```sh
    mvn clean install
    ```
-5. Start the application by running:
+4. Start the application by running:
    ```sh
    mvn spring-boot:run
    ```
 
    Alternatively, you can run the application directly from your IDE by executing the `Server` main class.
 
-6. Once the application is running, you can access the backend API at `http://localhost:8080/` by default, or the port
+5. Once the application is running, you can access the backend API at `http://localhost:8080/` by default, or the port
    specified in your `.env` configuration.
-   Happy coding and learning!
 
 # Database Schema
 
