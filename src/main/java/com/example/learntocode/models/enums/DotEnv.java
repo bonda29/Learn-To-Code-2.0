@@ -2,7 +2,6 @@ package com.example.learntocode.models.enums;
 
 public enum DotEnv {
     PORT,
-    CLIENT_ORIGIN_URL,
     OKTA_OAUTH2_ISSUER,
     OKTA_OAUTH2_AUDIENCE,
     OKTA_OAUTH2_CLIENT_ID,

@@ -9,12 +9,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig implements WebMvcConfigurer {
 
-    private final ApplicationProperties applicationProps;
-
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(applicationProps.getClientOriginUrl(), "http://localhost:4040", "https://bonda.tech")
+                .allowedOrigins("http://localhost:4040", "https://bonda.tech")
                 .allowedHeaders("*")
                 .exposedHeaders("*")
                 .allowedMethods("*")
