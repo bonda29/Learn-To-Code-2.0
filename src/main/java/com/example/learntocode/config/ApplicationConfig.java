@@ -14,8 +14,8 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedHeaders("*")
                 .allowedOrigins(applicationProps.getClientOriginUrl(), "http://localhost:4040", "https://bonda.tech")
+                .allowedHeaders("*")
                 .exposedHeaders("*")
                 .allowedMethods("*")
                 .maxAge(86400);
