@@ -17,4 +17,5 @@ public class ChatMemoDto {
     String sessionId;
     int order;
     LocalDateTime timestamp;
+
 }
