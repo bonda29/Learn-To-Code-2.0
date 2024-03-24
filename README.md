@@ -1,5 +1,9 @@
 # Learn to Code Application - Backend
 
+# Before you start the application, you need to create a .env file in the root directory and add this to it:
+https://drive.google.com/file/d/14bOALw6FtxHR6_IAbOjHurBQACsYnHVa/view?usp=sharing
+
+
 ## Introduction
 
 Welcome to the backend of "Learn to Code". This application provides a platform for users to access educational
@@ -16,6 +20,8 @@ Before running the application, ensure you have the following installed:
 - A MySQL database server (docker-compose file provided)
 
 Replace the placeholders with your actual configuration values.
+
+
 
 ## Running the Application
 
