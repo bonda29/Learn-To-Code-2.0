@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Question> questions = new LinkedHashSet<>();
 
-    @Column(name = "blocked", nullable = false, columnDefinition = "boolean default false")
+    @Column(nullable = false, columnDefinition = "BIT default 0")
     private boolean blocked;
 
     @JsonProperty("created_at")

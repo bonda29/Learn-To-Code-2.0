@@ -32,11 +32,11 @@ public class DirectMessage {
     @Column(name = "timestamp", nullable = false)
     private Timestamp timestamp;
 
-    @Column(name = "is_edited", columnDefinition = "boolean default false")
-    private boolean isEdited;
+    @Column(nullable = false, columnDefinition = "BIT default 0")
+    private Boolean isEdited;
 
-    @Column(name = "is_read", columnDefinition = "boolean default false")
-    private boolean isRead;
+    @Column(nullable = false, columnDefinition = "BIT default 0")
+    private Boolean isRead;
 
     @PrePersist
     protected void onCreate() {
