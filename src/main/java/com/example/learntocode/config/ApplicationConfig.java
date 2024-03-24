@@ -2,8 +2,6 @@ package com.example.learntocode.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,7 +14,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(applicationProps.getClientOriginUrl())
+                .allowedOrigins(applicationProps.getClientOriginUrl(), "http://localhost:4040", "https://bonda.tech")
                 .allowedHeaders("*")
                 .exposedHeaders("*")
                 .allowedMethods("*")

@@ -15,31 +15,6 @@ Before running the application, ensure you have the following installed:
 - An IDE of your choice (e.g., IntelliJ IDEA, Eclipse, VSCode)
 - A MySQL database server (docker-compose file provided)
 
-Additionally, you will need to set up environment variables or a `.env` file with the necessary API keys and
-configuration settings for external services such as Auth0, Stripe, OpenAI, and ChatEngine.
-
-## Configuration
-
-Create a `.env` file in the root directory of the project with the following variables:
-
-```env
-CLIENT_ORIGIN_URL=<your-client-app-origin>
-OKTA_OAUTH2_ISSUER=<your-okta-issuer-url>
-OKTA_OAUTH2_AUDIENCE=<your-okta-audience>
-OKTA_OAUTH2_CLIENT_ID=<your-okta-client-id>
-OKTA_OAUTH2_CLIENT_SECRET=<your-okta-client-secret>
-OKTA_OAUTH2_MANAGEMENT_API_TOKEN=<your-okta-api-token>
-SPRING_DATASOURCE_URL=<your-database-url>
-JDBC_DATABASE_USERNAME=<your-database-username>
-JDBC_DATABASE_PASSWORD=<your-database-password>
-OPENAI_TOKEN=<your-openai-api-token>
-STRIPE_PK=<your-stripe-public-key>
-STRIPE_SK=<your-stripe-secret-key>
-WEATHER_API_KEY=<your-weather-api-key>
-CHATENGINE_PROJECT_ID=<your-chatengine-project-id>
-CHATENGINE_API_KEY=<your-chatengine-api-key>
-```
-
 Replace the placeholders with your actual configuration values.
 
 ## Running the Application
