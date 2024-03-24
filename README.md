@@ -3,7 +3,6 @@
 # Before you start the application, you need to create a .env file in the root directory and add this to it:
 https://drive.google.com/file/d/14bOALw6FtxHR6_IAbOjHurBQACsYnHVa/view?usp=sharing
 
-
 ## Introduction
 
 Welcome to the backend of "Learn to Code". This application provides a platform for users to access educational
