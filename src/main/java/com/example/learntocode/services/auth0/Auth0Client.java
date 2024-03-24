@@ -63,7 +63,10 @@ public class Auth0Client implements UserClient {
     @SneakyThrows
     public void deleteUser(User user) {
         Request request = buildRequest(issuer + "api/v2/users/" + user.getAuth0Id(), "DELETE", null);
-        executeRequest(request);
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            throw new IOException("Failed to delete user with email: " + user.getEmail());
+        }
     }
 
     @SneakyThrows
