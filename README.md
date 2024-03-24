@@ -3,6 +3,8 @@
 # Before you start the application, you need to create a .env file in the root directory and add this to it:
 https://drive.google.com/file/d/14bOALw6FtxHR6_IAbOjHurBQACsYnHVa/view?usp=sharing
 
+![env file example.png](img%2Fenv%20file%20example.png)
+
 ## Introduction
 
 Welcome to the backend of "Learn to Code". This application provides a platform for users to access educational
@@ -38,7 +40,7 @@ Before running the application, ensure you have the following installed:
 
 # Database Schema
 
-![db relation diagram.png](db%20relation%20diagram.png)
+![db relation diagram.png](img%2Fdb%20relation%20diagram.png)
 
 # Controllers Documentation
 
