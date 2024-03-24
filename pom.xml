@@ -135,7 +135,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
-            <version>RELEASE</version>
+            <version>3.0.13.RELEASE</version>
         </dependency>
 
         <!-- OpenAi Api -->
