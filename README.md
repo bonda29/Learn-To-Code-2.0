@@ -5,6 +5,9 @@ https://drive.google.com/file/d/14bOALw6FtxHR6_IAbOjHurBQACsYnHVa/view?usp=shari
 
 ![env file example.png](img%2Fenv%20file%20example.png)
 
+# We use azure to store our database. In order to have access to the db you need to send your public ip address to us so we can add it to the firewall rules.
+## send your public ip address to: bondableglobe10@gmail.com
+
 ## Introduction
 
 Welcome to the backend of "Learn to Code". This application provides a platform for users to access educational
