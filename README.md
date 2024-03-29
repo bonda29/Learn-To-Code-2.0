@@ -1,12 +1,8 @@
 # Learn to Code Application - Backend
 
 # Before you start the application, you need to create a .env file in the root directory and add this to it:
-https://drive.google.com/file/d/14bOALw6FtxHR6_IAbOjHurBQACsYnHVa/view?usp=sharing
 
 ![env file example.png](img%2Fenv%20file%20example.png)
-
-# We use azure to store our database. In order to have access to the db you need to send your public ip address to us so we can add it to the firewall rules.
-## send your public ip address to: bondableglobe10@gmail.com
 
 ## Introduction
 
