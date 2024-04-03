@@ -12,7 +12,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4040", "https://bonda.tech")
+                .allowedOrigins("*")
                 .allowedHeaders("*")
                 .exposedHeaders("*")
                 .allowedMethods("*")
